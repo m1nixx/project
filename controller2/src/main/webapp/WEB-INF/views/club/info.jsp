@@ -40,9 +40,9 @@
                 <div class="col-lg-6 ps-lg-0 wow fadeIn" data-wow-delay="0.1s" style="min-height: 400px;">
                     <div class="position-relative h-100" align="center">
                     <div class="datail_vertical">
-                        <h6 class="text-primary" >관심사</h6>
-                        <h1 class="mb-4"> ${clubvo.club_name } </h1>
-                        <p><i class="fa fa-check-circle text-primary me-3"></i>모임정원 ~명</p>
+                        <h6 class="text-primary" >${interest }</h6>
+                        <h1 class="mb-4"> ${clubs.club_name } </h1>
+                        <p><i class="fa fa-check-circle text-primary me-3"></i>정원 : ${clubs.club_capacity }명</p>
                         <%-- <c:if test="${모임비회원이면 가입하기 노출}"></c:if> --%>
                         	<a href="" class="btn btn-primary rounded-pill py-3 px-5 mt-3">가입하기</a>
                         <!-- 모임회원이면 모임평가(별 다섯개) 중복불가능하게 만들어야함-->
@@ -53,7 +53,7 @@
                 <div class="col-lg-6 about-text py-5 wow fadeIn" data-wow-delay="0.5s">
                     <div class="p-lg-5 pe-lg-0">
                 <h6 class="text-primary">소개글</h6>
-                        <p>${clubvo.club_content }</p>
+                        <p>${clubs.club_content }</p>
                     </div>
                 </div>
             </div>

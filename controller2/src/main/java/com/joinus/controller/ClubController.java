@@ -1,11 +1,8 @@
 package com.joinus.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.UUID;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -14,9 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.joinus.domain.ClubInterestVO;
+import com.joinus.domain.ClubMembers;
 import com.joinus.domain.ClubVo;
 import com.joinus.domain.InterestDetailsVo;
 import com.joinus.domain.InterestVo;
@@ -70,7 +66,7 @@ public class ClubController {
 		
 		// 모임등록
 		@RequestMapping(value="/new", method = RequestMethod.POST)
-		public String createClubPost(@RequestParam("interest_detail_name") String detail,ClubVo clvo) {
+		public String createClubPost(@RequestParam("interest_detail_name") String detail,@RequestParam("member_no") int member_no,ClubVo clvo,Model model) {
 		
 			/* MultipartFile file, HttpServletRequest request
 			 * //모임 사진등록 if(file != null) { // 파일이 업로드 될 경로 설정 String saveDir =
@@ -88,25 +84,33 @@ public class ClubController {
 			 * uuid + ext; clvo.setClub_image(fileName); }
 			 * 
 			 */
-			//클럽정보저장
-			int club_no = service.createClub(clvo);
-			//모임관심사 저장
-			service.createClubInter(club_no, detail);
-			//모임장 권한주기
 			
 			
+			  //관심사번호 가져오기
+				InterestDetailsVo interDetail = service.getInterestNo(detail); 
+		      //클럽정보 저장 + 넘버가져오기 
+				service.newClub(clvo); 
+				int club = clvo.getClub_no();
+				System.out.println(club);
+			  //모임관심사 저장
+				service.newClubInterest(club, interDetail.getInterest_no(),interDetail.getInterest_detail_no()); 
+			  //모임가입	
+				ClubMembers members = new ClubMembers();
+				members.setClub_no(club);
+				members.setMember_no(member_no);
+				members.setClub_role_no(2); //모임 첫생성은 관리자
+				service.join(members);
 			
-			
-			return "redirect:/club/info";
+			model.addAttribute("interest", detail);	
+			model.addAttribute("clubs", clvo);
+			model.addAttribute("members", members);
+			return "/club/info";
 		}
 		
 		
 		// http://localhost:8088/club/info
 		@RequestMapping(value = "/info", method = RequestMethod.GET)
-		public void info(/* @RequestParam("club_no") int Cno */Model model) {
-			
-			ClubVo vo = service.getClubInfo(1);
-			model.addAttribute("clubvo", vo);
+		public void info(Model model) {
 			
 			//모임가입 여부 확인
 			//모임장 여부 확인

@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.joinus.domain.ClubMembers;
 import com.joinus.domain.ClubVo;
 import com.joinus.domain.InterestDetailsVo;
 import com.joinus.domain.InterestVo;
@@ -22,45 +23,59 @@ public class ClubDaoImpl implements ClubDao{
 	@Inject
 	private static final String NAMESPACE="com.joinus.mapper.clubMapper";
 		
+	
+	//회원정보 가져오기
 	@Override
 	public InterestVo interest(Integer num) {
 		return session.selectOne(NAMESPACE+".getMemberInterest",num);
 	}
-	
+	//회원관심사 가져오기
 	@Override
 	public MemberVo getMember(Integer num) {
 		return session.selectOne(NAMESPACE+".getMember", num);
 	}
 	
-
+	//회원이 선택한 관심사의 세부관심사리스트 가져오기
 	@Override
 	public List<InterestDetailsVo> getDetailName(Integer num) {
 		return session.selectList(NAMESPACE+".getInterestNameDetails", num);
 	}
 
-	@Override
-	public Integer createClubInfo(ClubVo vo) {
-		return session.insert(NAMESPACE+".createClub", vo);
-	}
 	
-
+	//회원이 입력한 클럽정보 저장하기
 	@Override
-	public void createClubInter(Integer num, String name) {
-		Map<String, Object> set = new HashMap<>();
-		set.put("club_no",num );
-		set.put("interest_detail_name",name);
-		session.insert(NAMESPACE+".createClubInterest", set);
+	public void newClub(ClubVo vo) {
+		session.insert(NAMESPACE+".createClub", vo);
+	}
+	//회원이 선택한 관심사 넘버값 가져오기
+	@Override
+	public InterestDetailsVo getInterestNo(String name) {
+		return session.selectOne(NAMESPACE+".getInterestNo", name);
+	}
+	//회원이 입력한 클럽관심사 저장하기
+	@Override
+	public void newClubInterest(Integer club_no, Integer interest_no, Integer interest_detail_no) {
+		Map<String, Integer> num = new HashMap<String, Integer>();
+		num.put("club_no", club_no);
+		num.put("interest_no", interest_no);
+		num.put("interest_detail_no", interest_detail_no);
 		
+		session.insert(NAMESPACE+".createClubInterest", num);
 	}
+
 	
+	//모임가입하기
+	@Override
+	public void join(ClubMembers members) {
+		session.insert(NAMESPACE+".joinMembers",members);
+	}
+
+
+
 	@Override
 	public ClubVo getClubInfo(Integer num) {
 		return session.selectOne(NAMESPACE+".getClubInfo", num);
 	}
-
-
-
 	
-
-
+	
 }

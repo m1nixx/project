@@ -131,7 +131,8 @@ function select(item){
 	                
 	                
 	                           
-                         <form method="post" >                          
+                         <form method="post" >    
+                         <input type="hidden" value="${membervo.member_no}" name="member_no" >                      
                          <div class="row g-3" align="center">
 	                 <p class="sub3"> 모임의 정보를 작성해주세요 </p>      
                                 <div class="col-md-6">
