@@ -1,6 +1,8 @@
 package com.joinus.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -37,14 +39,26 @@ public class ClubDaoImpl implements ClubDao{
 	}
 
 	@Override
-	public void createClub(ClubVo vo) {
-		session.insert(NAMESPACE+".createClub", vo);
+	public Integer createClubInfo(ClubVo vo) {
+		return session.insert(NAMESPACE+".createClub", vo);
 	}
+	
 
+	@Override
+	public void createClubInter(Integer num, String name) {
+		Map<String, Object> set = new HashMap<>();
+		set.put("club_no",num );
+		set.put("interest_detail_name",name);
+		session.insert(NAMESPACE+".createClubInterest", set);
+		
+	}
+	
 	@Override
 	public ClubVo getClubInfo(Integer num) {
 		return session.selectOne(NAMESPACE+".getClubInfo", num);
 	}
+
+
 
 	
 

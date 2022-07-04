@@ -131,7 +131,7 @@ function select(item){
 	                
 	                
 	                           
-                         <form method="post" enctype="multipart/form-data" >                          
+                         <form method="post" >                          
                          <div class="row g-3" align="center">
 	                 <p class="sub3"> 모임의 정보를 작성해주세요 </p>      
                                 <div class="col-md-6">
@@ -142,7 +142,7 @@ function select(item){
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="interest_detail" name="interest_detail_no" readonly="readonly">
+                                        <input type="text" class="form-control" id="interest_detail" name="interest_detail_name" readonly="readonly">
                                         <label for="name">세부관심사</label>
                                     </div>
                                 </div>
@@ -165,7 +165,7 @@ function select(item){
                                     </div>
                                 </div>
                               
-                              
+                              <!-- 
                               	 <div class="col-12">
                                     <div class="form-floating">
                                         <input type="file" class="btn py-2 position-absolute top-0 end-0 mt-2 me-2" name="club_image">
@@ -175,7 +175,7 @@ function select(item){
                                     <div class="form-floating">
                                         <p class="GreenP">대표이미지를 올려주세요(선택사항)</p>
                                     </div>
-                                    </div>
+                                    </div> -->
                                     <hr> 
                                  <div class="col-12">
                                     <button class="btn btn-primary rounded-pill py-3 px-5" type="submit">모임 개설하기</button>

@@ -22,7 +22,16 @@
 	</select>
 	
 	<insert id="createClub">
-		insert into clubs(club_name,club_content,club_image) values(#{club_name},#{club_capacity},#{club_content},#{club_image})
+		insert into clubs(club_name,club_capacity,club_content,club_image) 
+		values(#{club_name},#{club_capacity},#{club_content},#{club_image})
+	</insert>
+	<insert id="createClubInterest">
+		<selectKey resultType="integer" keyProperty="club_no" order="BEFORE">
+		select club_no from clubs where club_no=#{club_no}
+		</selectKey>
+		insert into club_interests(interest_no,interest_detail_no,#{club_no}) 
+		select interest_no,interest_detail_no from interest_details 
+		where interest_detail_name=#{interest_detail_name}
 	</insert>
 	
 	<select id="getClubInfo" resultType="ClubVo">

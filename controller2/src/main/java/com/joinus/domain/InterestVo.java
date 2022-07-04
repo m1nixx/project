@@ -7,8 +7,8 @@ import lombok.ToString;
 
 @Data
 @ToString
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class InterestVo {
 	
 	private int interest_no;

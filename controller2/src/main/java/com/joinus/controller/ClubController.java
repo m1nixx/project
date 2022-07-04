@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.joinus.domain.ClubInterestVO;
 import com.joinus.domain.ClubVo;
 import com.joinus.domain.InterestDetailsVo;
 import com.joinus.domain.InterestVo;
@@ -35,7 +36,7 @@ public class ClubController {
 		@RequestMapping(value="/new", method = RequestMethod.GET)
 		public String createClubGet(Model model, HttpSession session) {
 			
-			session.setAttribute("member_no", 1);
+			session.setAttribute("member_no",5);
 			
 			//회원X = 로그인화면 이동 
 			Integer member_no = (Integer)session.getAttribute("member_no");
@@ -69,35 +70,33 @@ public class ClubController {
 		
 		// 모임등록
 		@RequestMapping(value="/new", method = RequestMethod.POST)
-		public String createClubPost(ClubVo vo ,MultipartFile file,HttpServletRequest request) {
+		public String createClubPost(@RequestParam("interest_detail_name") String detail,ClubVo clvo) {
 		
-			//모임 사진등록 
-			if(file != null) {
-				// 파일이 업로드 될 경로 설정
-				String saveDir = request.getSession().getServletContext().getRealPath("/resources/upload/clubImg");
-				//위에서 설정한 경로의 폴더가 없을 경우 생성
-		        java.io.File dir = new java.io.File(saveDir);
-		        if(!dir.exists()) {
-		            dir.mkdirs();
-		        }
-		        String originalfilename = file.getOriginalFilename();
-				String ext = originalfilename.substring(originalfilename.lastIndexOf("."));
-		        		
-		        	
-						 // 이름 값 변경을 위한 설정
-		                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		                String uuid = UUID.randomUUID().toString();
-		                
-		                // 파일 이름 변경
-		                String fileName = sdf.format(System.currentTimeMillis()) + "_" + uuid + ext;
-		               vo.setClub_image(fileName);
-		        }
-			
-	
+			/* MultipartFile file, HttpServletRequest request
+			 * //모임 사진등록 if(file != null) { // 파일이 업로드 될 경로 설정 String saveDir =
+			 * request.getSession().getServletContext().getRealPath(
+			 * "/resources/upload/clubImg"); //위에서 설정한 경로의 폴더가 없을 경우 생성 java.io.File dir =
+			 * new java.io.File(saveDir); if(!dir.exists()) { dir.mkdirs(); } String
+			 * originalfilename = file.getOriginalFilename(); String ext =
+			 * originalfilename.substring(originalfilename.lastIndexOf("."));
+			 * 
+			 * 
+			 * // 이름 값 변경을 위한 설정 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+			 * String uuid = UUID.randomUUID().toString();
+			 * 
+			 * // 파일 이름 변경 String fileName = sdf.format(System.currentTimeMillis()) + "_" +
+			 * uuid + ext; clvo.setClub_image(fileName); }
+			 * 
+			 */
 			//클럽정보저장
-			service.createClub(vo);
-			//클럽장 권한 테이블 정보 생성
-			//모임관심사 테이블 정보 생성
+			int club_no = service.createClub(clvo);
+			//모임관심사 저장
+			service.createClubInter(club_no, detail);
+			//모임장 권한주기
+			
+			
+			
+			
 			return "redirect:/club/info";
 		}
 		

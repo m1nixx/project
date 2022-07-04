@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.joinus.domain.ClubInterestVO;
 import com.joinus.domain.ClubVo;
 import com.joinus.domain.InterestDetailsVo;
 import com.joinus.domain.InterestVo;
@@ -36,14 +37,20 @@ public class ClubServiceImpl implements ClubService {
 	}
 
 	@Override
-	public void createClub(ClubVo vo) {
-		dao.createClub(vo);
+	public Integer createClub(ClubVo vo) {
+		return dao.createClubInfo(vo);
 	}
 
+	@Override
+	public void createClubInter(Integer num, String name) {
+		dao.createClubInter(num,name);
+	}
+	
 	@Override
 	public ClubVo getClubInfo(Integer num) {
 		return dao.getClubInfo(num);
 	}
+
 
 
 
