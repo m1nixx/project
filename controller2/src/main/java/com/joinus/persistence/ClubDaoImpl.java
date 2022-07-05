@@ -76,6 +76,10 @@ public class ClubDaoImpl implements ClubDao{
 	public ClubVo getClubInfo(Integer num) {
 		return session.selectOne(NAMESPACE+".getClubInfo", num);
 	}
+	@Override
+	public ClubMembers getClubMembers(Integer num) {
+		return session.selectOne(NAMESPACE+".getClubMember", num);
+	}
 	
 	
 }

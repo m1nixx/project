@@ -5,10 +5,6 @@
 
 
 	<style>
-	
-		.master>.p-lg-5 .ps-lg-0 {
-		 width: 800px;
-		}
 		.container .contact .px-lg-0 {
 			height: 1000px;
 		}
@@ -38,6 +34,22 @@
 		.marginTOP {
 			margin-top: 5em;
 		}
+		
+		#NewTitle {
+			margin-top: 150px;
+			margin-bottom: 150px;
+		}
+		#NewContent {
+			font-family: "Open Sans",sans-serif;
+		    font-size: 1rem;
+		    font-weight: 400;
+		    line-height: 1.5;
+		    color: #9B9B9B;
+		    background-color: #fff;
+		    -webkit-text-size-adjust: 100%;
+		    -webkit-tap-highlight-color: rgba(0,0,0,0);
+		}
+		
 	</style>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
@@ -95,19 +107,15 @@ function select(item){
     
     <!-- Contact Start -->
                 
-        <div id="title" align="center">
+        <div id="NewTitle" align="center">
             <h6 class="text-primary">JoinUs</h6>
             <h1 class="mb-4">소모임 등록하기</h1>
             <p class="mb-4">우리들만의 모임을 자유롭게 만들어보세요! </p>
         </div>
-    <div class="master">
-    <div class="container-fluid bg-light overflow-hidden px-lg-0" style="margin: 3rem 0;" align="center" >
-        <div class="container contact px-lg-0" >
-            <div class="col-lg-6 contact-text py-5 wow fadeIn" data-wow-delay="0.5s">
-              <!--  <div class="p-lg-5 ps-lg-0"> -->
-               	아이콘?이미지 들어갈 공간
-                  <p class="sub"> ${membervo.member_name }님의 주요관심사는 ' ${interest.interest_name } ' 입니다! </p>   
+        <div id="NewContent" align="center">
+        	  	아이콘?이미지 들어갈 공간
                 <br>  <hr>    
+                  <p class="sub"> ${membervo.member_name }님의 주요관심사는 ' ${interest.interest_name } ' 입니다! </p>   
                   
 	              <p class="sub2"> 어떤 관심사로 모임을 만들까요? </p>      
                   <div id="select" style="font-size: large;">
@@ -130,6 +138,12 @@ function select(item){
 	                 <div class="newForm"> </div>
 	                
 	                
+		</div>        
+        
+    <div class="container-fluid bg-light overflow-hidden px-lg-0" >
+        <div class="container contact px-lg-0" >
+            <div class="col-lg-6 contact-text py-5 wow fadeIn" data-wow-delay="0.5s">
+             
 	                           
                          <form method="post" >    
                          <input type="hidden" value="${membervo.member_no}" name="member_no" >                      
@@ -186,6 +200,7 @@ function select(item){
                              </div>
                                   </div>
                               
+                                </div>
                                 </div>
                                 </div>
                                 </div>

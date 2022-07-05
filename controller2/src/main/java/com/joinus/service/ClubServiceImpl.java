@@ -69,6 +69,11 @@ public class ClubServiceImpl implements ClubService {
 		return dao.getClubInfo(num);
 	}
 
+	@Override
+	public ClubMembers getClubMembers(Integer num) {
+		return dao.getClubMembers(num);
+	}
+
 	
 
 }

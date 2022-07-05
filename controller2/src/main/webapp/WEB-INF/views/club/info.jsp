@@ -18,6 +18,40 @@
 		}
 	</style>
 
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script type="text/javascript">
+	//데이터 가져와서 출력시키는 거 여기서.. 어디서 들어와도 출력 가능하도록!
+
+	
+		/* $(document).ready(function(){
+	
+			//new Promise( (succ, fail)=>{	
+			
+				var club_no = ${session.club_no}
+				
+			alert('연결');
+			alert(club_no);
+			$.ajax({
+				
+			url:'${pageContext.request.contextPath}/club/ajax',
+			type:'GET',
+			data: {club_no},
+			success: function(data){
+				$('#club_name').append(data.club_name);					
+				$('#club_capa').append("가입정원 :"+data.club_capa+" 명");					
+				$('#club_content').append(data.club_content);					
+			}
+		//	fail: 
+				
+			});
+		//	}).then((arg))=>{
+				
+		//	});
+		}); */
+
+</script>
+
+
 
 
 <body>
@@ -30,6 +64,7 @@
 			<li class="mx-2 active" >모임정보</li>
 			<li class="mx-2"  onclick="listClubBoard()">모임게시판</li>
 			<li class="mx-2"  onclick="listClubPhoto()">사진첩</li>
+			<li class="mx-2"  onclick="listClubMember()">모임회원</li>
 			</ul>
 	</div>
 
@@ -41,11 +76,13 @@
                     <div class="position-relative h-100" align="center">
                     <div class="datail_vertical">
                         <h6 class="text-primary" >${interest }</h6>
-                        <h1 class="mb-4"> ${clubs.club_name } </h1>
-                        <p><i class="fa fa-check-circle text-primary me-3"></i>정원 : ${clubs.club_capacity }명</p>
-                        <%-- <c:if test="${모임비회원이면 가입하기 노출}"></c:if> --%>
-                        	<a href="" class="btn btn-primary rounded-pill py-3 px-5 mt-3">가입하기</a>
+                        <h1 class="mb-4" id="club_name">${clubvo.club_name }</h1>
+                        <p id="club_capa"><i class="fa fa-check-circle text-primary me-3" ></i>정원:${clubvo.club_capacity } 명</p>
+                        <c:if test="${clubmemberVO.member_no == member_no}">
                         <!-- 모임회원이면 모임평가(별 다섯개) 중복불가능하게 만들어야함-->
+                        		별점 만들 예정.....
+                        </c:if>
+                        	<a href="" class="btn btn-primary rounded-pill py-3 px-5 mt-3">가입하기</a>
  							                     
                 	    </div>
                     </div>
@@ -53,7 +90,7 @@
                 <div class="col-lg-6 about-text py-5 wow fadeIn" data-wow-delay="0.5s">
                     <div class="p-lg-5 pe-lg-0">
                 <h6 class="text-primary">소개글</h6>
-                        <p>${clubs.club_content }</p>
+                        <p id="club_content"></p>
                     </div>
                 </div>
             </div>
@@ -68,7 +105,9 @@
                 <h6 class="text-primary">${clubvo.club_name } </h6>
                 <h1 class="mb-4">정모</h1>
                 <!-- 정모만들기 모임장만 보일 수 있도록  -->
+                <c:if test="${clubmemberVO.club_role_no == 2}">
                 <a class="small fw-medium" href="">모임장 정모만들기<i class="fa fa-arrow-right ms-2"></i></a>
+                </c:if>
            			 </div>
                 <hr><br><br>
             <div class="row g-5">
@@ -188,7 +227,7 @@
     <script type="text/javascript">
   
   //모임 게시판으로 이동
-  function listClubBoard(){
+  function listClubMember(){
 	  location.href='${PageContext.request.contextPath }/test';
   }
   // 모임 사진첩으로 이동
