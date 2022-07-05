@@ -9,20 +9,21 @@
 			height: 1000px;
 		}
 		.sub {
-		font-size: 1.5em; font-weight: bold; color: #1A2A36; margin-top: 50px;"	
+		font-size: 1.2em;  color: #32C36C;	
 		}
 		.sub2 {
-		font-size: 1.8em; font-weight: bold;  margin-top: 50px;"	
+		font-size: 1.7em; font-weight: bold; margin-top: 150px; margin-bottom: 30px; font-style: italic;
 		}
 		.sub3 {
-		font-size: 1.8em; font-weight: bold;  margin-top: 100px;"	
+		font-size: 1.7em; font-weight: bold;  margin-top: 300px;  font-style: italic;
 		}
 		h1>.mb-4 {
 			font-size: 3em;
 		}
-		.detail {
+		.detail, .detail2 {
 			display: none; font-size: large;
 		}
+		
 		form {
 			width: 50%; 
 			margin-bottom: 200px;
@@ -36,19 +37,40 @@
 		}
 		
 		#NewTitle {
-			margin-top: 150px;
-			margin-bottom: 150px;
+			margin-top: 80px;
+			margin-bottom: 80px;
 		}
 		#NewContent {
-			font-family: "Open Sans",sans-serif;
-		    font-size: 1rem;
-		    font-weight: 400;
-		    line-height: 1.5;
-		    color: #9B9B9B;
-		    background-color: #fff;
-		    -webkit-text-size-adjust: 100%;
-		    -webkit-tap-highlight-color: rgba(0,0,0,0);
+			margin-right: 300px;
 		}
+		
+		#centercontrol {
+			width: 100%;
+		}
+		
+		#inter1,#inter2,#inter3,#inter4,#inter5,#inter6,#inter7,#inter8 {
+		    font-weight: bold;
+			color: white;
+			
+		}
+		
+		#newDetail {
+		    font-weight: bold;
+			color: white;
+		}
+		.interTable>td {
+			width: 250px;
+			background-color: 32C36C;
+			font-size: large;
+			text-align:center;
+			padding: 20px;
+			vertical-align: middle;
+		    cursor: pointer;
+		    border: 10px solid #F6F7F8;
+ 		  	border-radius: 40px 10px;
+ 		  	color:white;
+		}
+		
 		
 	</style>
 
@@ -82,7 +104,7 @@ $(document).ready(function(){
 				
 				
 				for(i=0;i<data.length;i++){
-				$('.newForm').append("   <a href='#f-d'onclick='select(this);''>"+data[i].interest_detail_name+"</a>   ");
+				$('.newForm').append("<td><div onclick='select(this);'' id='newDetail'>"+data[i].interest_detail_name+"</td>");
 				}
 				
 				$('.detail').slideDown();
@@ -97,7 +119,9 @@ $(document).ready(function(){
   
 function select(item){
 	  var item = $(item).text();
+	  $('.detail2').slideDown();
 	  $('#interest_detail').val(item);
+	  $('#subject').scroll();
 } 
 
 </script>
@@ -112,46 +136,64 @@ function select(item){
             <h1 class="mb-4">소모임 등록하기</h1>
             <p class="mb-4">우리들만의 모임을 자유롭게 만들어보세요! </p>
         </div>
-        <div id="NewContent" align="center">
-        	  	아이콘?이미지 들어갈 공간
-                <br>  <hr>    
+     
+    <div class="container-fluid bg-light overflow-hidden px-lg-0" align="center" >
+        <div class="container contact px-lg-0" >
+            <div class="col-lg-6 contact-text py-5 wow fadeIn" data-wow-delay="0.5s" id="centercontrol">
+             
+	              <div id="NewContent" align="center">
                   <p class="sub"> ${membervo.member_name }님의 주요관심사는 ' ${interest.interest_name } ' 입니다! </p>   
-                  
-	              <p class="sub2"> 어떤 관심사로 모임을 만들까요? </p>      
-                  <div id="select" style="font-size: large;">
-		            <a href="#detail" id="inter1" >요리/제조</a>
-		  			<a href="#detail" id="inter2" >봉사활동</a>
-		  			<a href="#detail" id="inter3" >운동/스포츠</a>
-		  			<a href="#detail" id="inter4" >오락/게임</a> 
-		  			<br>
-		  			<a href="#detail" id="inter5" >음악/악기</a>
-		  			<a href="#detail" id="inter6" >여행</a>
-		  			<a href="#detail" id="inter7" >외국/언어</a>
-		  			<a href="#detail" id="inter8" >문화/공연/축제</a>
+                <hr>    
+	              <p class="sub2"> 1. 어떤 관심사로 모임을 만들까요? </p>    
+                  <div id="select" >
+                  	<table >
+                  		<tr class="interTable">
+                  			<td><div id="inter1" >요리/제조</td>
+                  			<td><div id="inter2" >봉사활동</td>
+                  			<td><div id="inter3" >운동/스포츠</td>
+                  			<td><div id="inter4" >오락/게임</td>
+                  		</tr>
+                  		<tr class="interTable">
+                  			<td><div id="inter5" >음악/악기</td>
+                  			<td><div id="inter6" >여행</td>
+                  			<td><div id="inter7" >외국/언어</td>
+                  			<td><div id="inter8" >문화/공연/축제</td>
+                  		</tr>
+                  	</table>
                   </div>
                   
                   	 	
                   	 	
                   <div class="detail" >
                    	 	<p class="marginTOP"> ▼ </p>
-	                 <p class="sub3"> 세부관심사를 선택해주세요 </p>      
-	                 <div class="newForm"> </div>
+	                 <p class="sub3"> 2. 세부관심사를 선택해주세요 </p>    
+	                 <table >
+                  		<tr class="interTable newForm">				
+                  		</tr>
+                  	</table>
+                  		
+	                 <div class=""> </div>
 	                
+	              </div>
 	                
-		</div>        
-        
-    <div class="container-fluid bg-light overflow-hidden px-lg-0" >
-        <div class="container contact px-lg-0" >
-            <div class="col-lg-6 contact-text py-5 wow fadeIn" data-wow-delay="0.5s">
-             
-	                           
+		       
+               
+                  <div class="detail2" >
                          <form method="post" >    
                          <input type="hidden" value="${membervo.member_no}" name="member_no" >                      
                          <div class="row g-3" align="center">
-	                 <p class="sub3"> 모임의 정보를 작성해주세요 </p>      
+	                 <p class="sub3"> 3. 모임의 정보를 작성해주세요 </p>     
+	               			  <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" name="" readonly="readonly">
+                                        <label for="name">지역</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="interest" placeholder="관심사" name="interest_no" readonly="readonly">
+                                        <input type="text" class="form-control" id="interest" name="interest_no" readonly="readonly">
                                         <label for="name">관심사</label>
                                     </div>
                                 </div>
@@ -197,12 +239,11 @@ function select(item){
                                 </div>
                              </div>
                         </form>
-                             </div>
                                   </div>
-                              
+                              </div> 
                                 </div>
                                 </div>
-                                </div>
+	<hr>
                                 </div>
      
     <!-- Contact End -->

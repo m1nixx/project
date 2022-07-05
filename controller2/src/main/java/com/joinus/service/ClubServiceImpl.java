@@ -70,7 +70,7 @@ public class ClubServiceImpl implements ClubService {
 	}
 
 	@Override
-	public ClubMembers getClubMembers(Integer num) {
+	public List<ClubMembers> getClubMembers(Integer num) {
 		return dao.getClubMembers(num);
 	}
 

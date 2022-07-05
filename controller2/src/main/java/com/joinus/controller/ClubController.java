@@ -95,6 +95,7 @@ public class ClubController {
 				System.out.println(club_no);
 			  //모임관심사 저장
 				service.newClubInterest(club_no, interDetail.getInterest_no(),interDetail.getInterest_detail_no()); 
+				model.addAttribute("club_no", club_no);	
 			  //모임가입	
 				ClubMembers members = new ClubMembers();
 				members.setClub_no(club_no);
@@ -102,13 +103,12 @@ public class ClubController {
 				members.setClub_role_no(2); //모임 첫생성은 관리자
 				service.join(members);
 			
-			session.setAttribute("club_no", club_no);	
-			model.addAttribute("memberNo", member_no);	
-			return "redirect:/club/+{club_no}";
+			model.addAttribute("mNo", member_no);	
+			return "redirect:/club/{club_no}";
 		}
 		
 		
-		// http://localhost:8088/club/4
+		// http://localhost:8088/club/21
 		@RequestMapping(value = "/{club_no}", method = RequestMethod.GET)
 		public String info(Model model,HttpSession session,@PathVariable("club_no") int club_no) {
 			
@@ -123,23 +123,29 @@ public class ClubController {
 			model.addAttribute("clubvo", clubvo);
 			
 			//회원번호
-			session.setAttribute("member_no", 7);
+			session.setAttribute("member_no", 56);
 			model.addAttribute("member_no", (int)session.getAttribute("member_no"));
 			
 			//클럽회원정보
-			ClubMembers clubmemberVO = service.getClubMembers(club_no);
+			List<ClubMembers> clubmemberVO = service.getClubMembers(club_no);
 			model.addAttribute("clubmemberVO", clubmemberVO);
 			
 			//모임관심사 정보로 관심사 가져오기
 			
 			return "/club/info";
 		}
-	
-		@RequestMapping(value = "/ajax",method=RequestMethod.GET)
-		public ClubVo ajaxClub(@RequestParam("club_no") int club_no) {
+		
+		@ResponseBody
+		@RequestMapping(value = "/join/{club_no}",method=RequestMethod.GET)
+		public void joinClub(@PathVariable("club_no") int club_no, @RequestParam("member_no") int member_no) {
 			
+			ClubMembers members = new ClubMembers();
+			members.setClub_member_no(member_no);
+			members.setClub_no(club_no);
+			members.setClub_role_no(1);
+			service.join(members);
+			System.out.println("모임가입완료");
 			
-			return null;
 		}
 		
 		

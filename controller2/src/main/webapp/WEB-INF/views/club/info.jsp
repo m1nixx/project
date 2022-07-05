@@ -20,13 +20,42 @@
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 <script type="text/javascript">
-	//데이터 가져와서 출력시키는 거 여기서.. 어디서 들어와도 출력 가능하도록!
-
 	
-		/* $(document).ready(function(){
+		 $(document).ready(function(){
 	
 			//new Promise( (succ, fail)=>{	
-			
+			$('#joinClub').click(function(){
+				alert('이건되는데');
+					//var club_no = ${clubmemberVO.club_no};
+				
+				 if(confirm("모임에 가입하시겠어요?") == true){
+					
+					//var member_no = ${member_no};
+					 //var club_no = ${clubmemberVO[0].club_no};
+					$.ajax({
+						url:'${pageContext.request.contextPath}/club/join/',
+						type:'GET',
+						data: ${member_no},
+						dataType: 'json',
+						success: function(){
+							alert(' 저희 모임에 오신걸 환영합니다! ');
+						},
+						fail: function(data){
+				                alert('failed');
+				        }
+
+				        });
+				    
+				}else{
+				        return false;
+				    } 
+
+				});
+						
+			});
+				
+				
+		/* 		
 				var club_no = ${session.club_no}
 				
 			alert('연결');
@@ -41,13 +70,13 @@
 				$('#club_capa').append("가입정원 :"+data.club_capa+" 명");					
 				$('#club_content').append(data.club_content);					
 			}
-		//	fail: 
+			fail: 
 				
 			});
-		//	}).then((arg))=>{
+			}).then((arg))=>{
 				
-		//	});
-		}); */
+			}); */
+	 
 
 </script>
 
@@ -67,7 +96,7 @@
 			<li class="mx-2"  onclick="listClubMember()">모임회원</li>
 			</ul>
 	</div>
-
+	
     <!-- About Start  모임 설명 -->
     <div class="container-fluid bg-light overflow-hidden my-5 px-lg-0">
         <div class="container about px-lg-0">
@@ -78,11 +107,14 @@
                         <h6 class="text-primary" >${interest }</h6>
                         <h1 class="mb-4" id="club_name">${clubvo.club_name }</h1>
                         <p id="club_capa"><i class="fa fa-check-circle text-primary me-3" ></i>정원:${clubvo.club_capacity } 명</p>
+                        
                         <c:if test="${clubmemberVO.member_no == member_no}">
                         <!-- 모임회원이면 모임평가(별 다섯개) 중복불가능하게 만들어야함-->
                         		별점 만들 예정.....
                         </c:if>
-                        	<a href="" class="btn btn-primary rounded-pill py-3 px-5 mt-3">가입하기</a>
+                        <c:if test="${clubmemberVO.member_no != member_no}">
+                        	<div class="btn btn-primary rounded-pill py-3 px-5 mt-3" id="joinClub">가입하기</div>
+                        </c:if>
  							                     
                 	    </div>
                     </div>
@@ -105,7 +137,7 @@
                 <h6 class="text-primary">${clubvo.club_name } </h6>
                 <h1 class="mb-4">정모</h1>
                 <!-- 정모만들기 모임장만 보일 수 있도록  -->
-                <c:if test="${clubmemberVO.club_role_no == 2}">
+                <c:if test="${clubmemberVO.member_no == member_no && clubmemberVO.club_role_no == 2 }">
                 <a class="small fw-medium" href="">모임장 정모만들기<i class="fa fa-arrow-right ms-2"></i></a>
                 </c:if>
            			 </div>
@@ -174,11 +206,8 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="team-item rounded overflow-hidden">
                         <div class="d-flex">
-                            <img class="img-fluid w-75" src="./resources/img/team-1.jpg" alt="">
+                            <img class="img-fluid w-75" src="" alt="">
                             <div class="team-social w-25">
-                                <a class="btn btn-lg-square btn-outline-primary rounded-circle mt-3" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-lg-square btn-outline-primary rounded-circle mt-3" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-lg-square btn-outline-primary rounded-circle mt-3" href=""><i class="fab fa-instagram"></i></a>
                             </div>
                         </div>
                         <div class="p-4">
@@ -190,11 +219,8 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="team-item rounded overflow-hidden">
                         <div class="d-flex">
-                            <img class="img-fluid w-75" src="./resources/img/team-2.jpg" alt="">
+                            <img class="img-fluid w-75" src="" alt="">
                             <div class="team-social w-25">
-                                <a class="btn btn-lg-square btn-outline-primary rounded-circle mt-3" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-lg-square btn-outline-primary rounded-circle mt-3" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-lg-square btn-outline-primary rounded-circle mt-3" href=""><i class="fab fa-instagram"></i></a>
                             </div>
                         </div>
                         <div class="p-4">
@@ -206,11 +232,8 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="team-item rounded overflow-hidden">
                         <div class="d-flex">
-                            <img class="img-fluid w-75" src="./resources/img/team-3.jpg" alt="">
+                            <img class="img-fluid w-75" src="" alt="">
                             <div class="team-social w-25">
-                                <a class="btn btn-lg-square btn-outline-primary rounded-circle mt-3" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-lg-square btn-outline-primary rounded-circle mt-3" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-lg-square btn-outline-primary rounded-circle mt-3" href=""><i class="fab fa-instagram"></i></a>
                             </div>
                         </div>
                         <div class="p-4">

@@ -32,6 +32,6 @@ public interface ClubDao {
 	//모임 정보 가져오기
 	public ClubVo getClubInfo(Integer num);
 	//모임 회원 정보 가져오기
-	public ClubMembers getClubMembers(Integer num);
+	public List<ClubMembers> getClubMembers(Integer num);
 	
 }
