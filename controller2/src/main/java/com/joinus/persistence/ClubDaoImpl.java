@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.joinus.domain.ClubGradesVO;
 import com.joinus.domain.ClubMembers;
 import com.joinus.domain.ClubVo;
 import com.joinus.domain.InterestDetailsVo;
@@ -79,6 +80,23 @@ public class ClubDaoImpl implements ClubDao{
 	@Override
 	public List<ClubMembers> getClubMembers(Integer num) {
 		return session.selectList(NAMESPACE+".getClubMember", num);
+	}
+	
+	//별점주기
+	@Override
+	public void clubGrade(ClubGradesVO vo) {
+		session.selectList(NAMESPACE+".clubGrade", vo);		
+	}
+	//별점정보 가져오기
+	@Override
+	public List<ClubGradesVO> getClubGrade(Integer num) {
+		return session.selectList(NAMESPACE+".getClubGrade", num);
+	}
+	//별점 평균값,참여자수 가져오기
+	@Override
+	public List<Map<String, Integer>> getClubAvgCnt(Integer num) {
+		List<Map<String, Integer>> list = session.selectList(NAMESPACE+".getGradeOption", num);
+		return list;
 	}
 	
 	

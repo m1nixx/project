@@ -16,6 +16,43 @@
 		#meetingTitle {
 			cursor: pointer;
 		}
+		
+		#myform fieldset{
+	    display: inline-block;
+	    direction: rtl;
+	    border:0;
+		}
+		#myform fieldset legend{
+		    text-align: right;
+		}
+		#myform input[type=radio]{
+		    display: none;
+		}
+		#myform label{
+		    font-size: 3em;
+		    color: transparent;
+		    text-shadow: 0 0 0 #f0f0f0;
+		}
+		#myform label:hover{
+		    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+		}
+		#myform label:hover ~ label{
+		    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+		}
+		#myform input[type=radio]:checked ~ label{
+		    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+		}
+		#reviewContents {
+		    width: 100%;
+		    height: 150px;
+		    padding: 10px;
+		    box-sizing: border-box;
+		    border: solid 1.5px #D3D3D3;
+		    border-radius: 5px;
+		    font-size: 16px;
+		    resize: none;
+		}
+				
 	</style>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
@@ -23,60 +60,70 @@
 	
 		 $(document).ready(function(){
 	
-			//new Promise( (succ, fail)=>{	
 			$('#joinClub').click(function(){
-				alert('이건되는데');
-					//var club_no = ${clubmemberVO.club_no};
 				
 				 if(confirm("모임에 가입하시겠어요?") == true){
 					
-					//var member_no = ${member_no};
-					 //var club_no = ${clubmemberVO[0].club_no};
+						var member_no = ${member_no};
 					$.ajax({
-						url:'${pageContext.request.contextPath}/club/join/',
-						type:'GET',
-						data: ${member_no},
+						url:'${pageContext.request.contextPath}/club/join/${clubmemberVO[0].club_no}',
+						type:'POST',
+						data: {member_no},
 						dataType: 'json',
 						success: function(){
-							alert(' 저희 모임에 오신걸 환영합니다! ');
 						},
 						fail: function(data){
 				                alert('failed');
+							location.reload();
+
 				        }
 
 				        });
+							alert(' 저희 모임에 오신걸 환영합니다! ');
+							location.reload();
 				    
 				}else{
 				        return false;
 				    } 
 
 				});
+		
+			
+				
+				$('#rate1,#rate2,#rate3,#rate4,#rate5').click(function(){
+					
+						var rate = $(this).val();
 						
+					 if(confirm(" 우리 모임에 "+rate+"점을 주시겠어요? ") == true){
+						
+						$.ajax({
+							
+							url:'${pageContext.request.contextPath}/club/grade',
+							type:'POST',
+							data: {
+								'club_no' : '${clubmemberVO[0].club_no}',
+								'member_no' : '${member_no}',
+								'club_grade_rate' : rate
+								},
+							dataType: 'json'
+						});
+							alert('참여해주셔서 감사합니다');
+							location.reload();
+					 }else{
+					        return false;
+					    } 
+					 
+				});
+			
+			
+			
+			
+			
+			
+			
 			});
 				
 				
-		/* 		
-				var club_no = ${session.club_no}
-				
-			alert('연결');
-			alert(club_no);
-			$.ajax({
-				
-			url:'${pageContext.request.contextPath}/club/ajax',
-			type:'GET',
-			data: {club_no},
-			success: function(data){
-				$('#club_name').append(data.club_name);					
-				$('#club_capa').append("가입정원 :"+data.club_capa+" 명");					
-				$('#club_content').append(data.club_content);					
-			}
-			fail: 
-				
-			});
-			}).then((arg))=>{
-				
-			}); */
-	 
 
 </script>
 
@@ -107,22 +154,62 @@
                         <h6 class="text-primary" >${interest }</h6>
                         <h1 class="mb-4" id="club_name">${clubvo.club_name }</h1>
                         <p id="club_capa"><i class="fa fa-check-circle text-primary me-3" ></i>정원:${clubvo.club_capacity } 명</p>
-                        
-                        <c:if test="${clubmemberVO.member_no == member_no}">
-                        <!-- 모임회원이면 모임평가(별 다섯개) 중복불가능하게 만들어야함-->
-                        		별점 만들 예정.....
-                        </c:if>
-                        <c:if test="${clubmemberVO.member_no != member_no}">
-                        	<div class="btn btn-primary rounded-pill py-3 px-5 mt-3" id="joinClub">가입하기</div>
-                        </c:if>
- 							                     
+                   																			     <!-- 남은 정원도 넣을까..?  -->
+						
+						
+						
+					
+
+<%-- 						<c:forEach var="items" items="${clubmemberVO}" varStatus="status" > 
+--%>
+						        
+				<!--  모임멤버면 별점, 별점 후 평균값 / 멤버가 아니면 가입하기 버튼 / break 대신 loop_flag 로 반복 막음 --> 
+						<c:set var="loop_flag" value="false" />
+						<c:forEach begin="0" end="10000" step="1" var="i">
+							<c:set var="memberN" value="${member_no }"/>
+							<c:set var="gradeMember" value="${clubGrade[i].member_no }"/>
+							<c:set var="clubMember" value="${clubmemberVO[i].member_no }"/>
+					    <c:if test="${not loop_flag }">
+							<c:choose>
+						        <c:when test="${memberN ne clubMember}">
+	                        		<div class="btn btn-primary rounded-pill py-3 px-5 mt-3" id="joinClub">가입하기</div>
+									 <c:set var="loop_flag" value="true" />
+						        </c:when>
+						        
+						        <c:when test="${memberN eq clubMember}">
+									<span class="text-bold">우리 모임의 별점을 선택해주세요</span>
+	                        		<form class="mb-3" name="myform" id="myform" method="post">
+									<fieldset>
+									<input type="radio" name="reviewStar" value="5" id="rate1"><label
+										for="rate1">★</label>
+									<input type="radio" name="reviewStar" value="4" id="rate2"><label
+										for="rate2">★</label>
+									<input type="radio" name="reviewStar" value="3" id="rate3"><label
+										for="rate3">★</label>
+									<input type="radio" name="reviewStar" value="2" id="rate4"><label
+										for="rate4">★</label>
+									<input type="radio" name="reviewStar" value="1" id="rate5"><label
+										for="rate5">★</label>
+									</fieldset>
+									</form>		
+	                        		<c:set var="loop_flag" value="true" />
+						        </c:when>
+						       <c:when test="${memberN eq gradeMember }">
+						        	우리모임의 평균 별점은? (참여자수 : ${gradeAvgCnt[0].cnt} 명 )
+						        	<h3> ${gradeAvgCnt[0].avg} 점 </h3>
+									 <c:set var="loop_flag" value="true" />
+						        </c:when>
+							</c:choose>	
+						        </c:if>
+						</c:forEach> 
+ 							                   
                 	    </div>
                     </div>
                 </div>
                 <div class="col-lg-6 about-text py-5 wow fadeIn" data-wow-delay="0.5s">
                     <div class="p-lg-5 pe-lg-0">
                 <h6 class="text-primary">소개글</h6>
-                        <p id="club_content"></p>
+                        <p id="club_content">${clubvo.club_content }</p>
                     </div>
                 </div>
             </div>
@@ -137,9 +224,11 @@
                 <h6 class="text-primary">${clubvo.club_name } </h6>
                 <h1 class="mb-4">정모</h1>
                 <!-- 정모만들기 모임장만 보일 수 있도록  -->
-                <c:if test="${clubmemberVO.member_no == member_no && clubmemberVO.club_role_no == 2 }">
+                <c:forEach var="member" items="${clubmemberVO}" >
+                <c:if test="${member.member_no == member_no && member.club_role_no == 2 }">
                 <a class="small fw-medium" href="">모임장 정모만들기<i class="fa fa-arrow-right ms-2"></i></a>
                 </c:if>
+                </c:forEach>
            			 </div>
                 <hr><br><br>
             <div class="row g-5">

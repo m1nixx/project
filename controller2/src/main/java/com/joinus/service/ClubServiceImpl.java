@@ -1,11 +1,13 @@
 package com.joinus.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.joinus.domain.ClubGradesVO;
 import com.joinus.domain.ClubMembers;
 import com.joinus.domain.ClubVo;
 import com.joinus.domain.InterestDetailsVo;
@@ -72,6 +74,21 @@ public class ClubServiceImpl implements ClubService {
 	@Override
 	public List<ClubMembers> getClubMembers(Integer num) {
 		return dao.getClubMembers(num);
+	}
+
+	@Override
+	public void clubGrade(ClubGradesVO vo) {
+		dao.clubGrade(vo);
+	}
+
+	@Override
+	public List<ClubGradesVO> getClubGrade(Integer num) {
+		return dao.getClubGrade(num);
+	}
+
+	@Override
+	public List<Map<String, Integer>> getClubAvgCnt(Integer num) {
+		return dao.getClubAvgCnt(num);
 	}
 
 	

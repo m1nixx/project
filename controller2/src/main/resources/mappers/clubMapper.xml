@@ -16,16 +16,8 @@
 		where interest_no = ( select interest_no from member_interests where member_no =#{member_no} )
 	</select>
 
-	<select id="getInterestNameDetails" resultType="InterestDetailsVo">
-		select * from interest_details
-		where interest_no=#{interest_no}
-	</select>
 	
 	
-	<select id="getInterestNo" resultType="InterestDetailsVo">
-		select interest_no,interest_detail_no from interest_details 
-		where interest_detail_name=#{interest_detail_name}
-	</select>
 	<insert id="createClub" parameterType="ClubVo">
 		insert into clubs(club_name,club_capacity,club_content,club_image)
 		values(#{club_name},#{club_capacity},#{club_content},#{club_image})
@@ -33,6 +25,7 @@
 		SELECT LAST_INSERT_ID()
 		</selectKey>
 	</insert>
+	
 	<insert id="createClubInterest">
 		insert into club_interests(club_no,interest_no,interest_detail_no)
 		values(#{club_no},#{interest_no},#{interest_detail_no})
@@ -44,6 +37,7 @@
 		SELECT LAST_INSERT_ID()
 		</selectKey>
 	</insert>
+	
 	<insert id="MemberRolesCom">
 		insert into club_member_roles(club_role_name) values(1)
 		<selectKey resultType="Integer" keyProperty="club_role_name" order="AFTER">
@@ -56,6 +50,22 @@
 		values(#{club_no},#{member_no},#{club_role_no})
 	</insert>
 	
+	<insert id="clubGrade">
+		insert into club_grades(club_no,member_no,club_grade_rate)
+		value(#{club_no},#{member_no},#{club_grade_rate})
+	</insert>
+	
+	<select id="getClubGrade" resultType="ClubGradesVO">
+		select * from club_grades
+		where club_no=#{club_no}
+	</select>
+	
+	<select id="getGradeOption" parameterType="int" resultType="HashMap">
+		select round(avg(club_grade_rate)) avg, count(club_grade_no) cnt
+		from club_grades where club_no=#{club_no}
+		
+	</select>
+	
 	
 	<select id="getClubInfo" resultType="ClubVo">
 		select * from clubs
@@ -65,5 +75,17 @@
 	<select id="getClubMember" resultType="ClubMembers">
 		select * from club_members where club_no=#{club_no}
 	</select>
+	
+	<select id="getInterestNameDetails" resultType="InterestDetailsVo">
+		select * from interest_details
+		where interest_no=#{interest_no}
+	</select>
+	
+	
+	<select id="getInterestNo" resultType="InterestDetailsVo">
+		select interest_no,interest_detail_no from interest_details 
+		where interest_detail_name=#{interest_detail_name}
+	</select>
+	
 
 </mapper>

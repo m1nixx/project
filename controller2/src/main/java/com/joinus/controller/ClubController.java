@@ -1,18 +1,22 @@
 package com.joinus.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.joinus.domain.ClubGradesVO;
 import com.joinus.domain.ClubMembers;
 import com.joinus.domain.ClubVo;
 import com.joinus.domain.InterestDetailsVo;
@@ -33,7 +37,7 @@ public class ClubController {
 		@RequestMapping(value="/new", method = RequestMethod.GET)
 		public String createClubGet(Model model, HttpSession session) {
 			
-			session.setAttribute("member_no",7);
+			session.setAttribute("member_no",35);
 			
 			//회원X = 로그인화면 이동 
 			Integer member_no = (Integer)session.getAttribute("member_no");
@@ -92,7 +96,7 @@ public class ClubController {
 		      //클럽정보 저장 + 넘버가져오기 
 				service.newClub(clvo); 
 				int club_no = clvo.getClub_no();
-				System.out.println(club_no);
+				 //System.out.println(club_no);
 			  //모임관심사 저장
 				service.newClubInterest(club_no, interDetail.getInterest_no(),interDetail.getInterest_detail_no()); 
 				model.addAttribute("club_no", club_no);	
@@ -103,12 +107,12 @@ public class ClubController {
 				members.setClub_role_no(2); //모임 첫생성은 관리자
 				service.join(members);
 			
-			model.addAttribute("mNo", member_no);	
+			model.addAttribute("member_no", member_no);	
 			return "redirect:/club/{club_no}";
 		}
 		
 		
-		// http://localhost:8088/club/21
+		// http://localhost:8088/club/
 		@RequestMapping(value = "/{club_no}", method = RequestMethod.GET)
 		public String info(Model model,HttpSession session,@PathVariable("club_no") int club_no) {
 			
@@ -121,14 +125,25 @@ public class ClubController {
 			//클럽정보
 			ClubVo clubvo = service.getClubInfo(club_no);
 			model.addAttribute("clubvo", clubvo);
+			//System.out.println("클럽정보 가져오기!"+clubvo);
 			
 			//회원번호
-			session.setAttribute("member_no", 56);
+			session.setAttribute("member_no", 44);
 			model.addAttribute("member_no", (int)session.getAttribute("member_no"));
 			
 			//클럽회원정보
 			List<ClubMembers> clubmemberVO = service.getClubMembers(club_no);
 			model.addAttribute("clubmemberVO", clubmemberVO);
+			//System.out.println("클럽 회원정보 가져오기!"+clubmemberVO);
+			
+			//클럽별점정보
+			List<ClubGradesVO> gradevo = service.getClubGrade(club_no);
+			model.addAttribute("clubGrade", gradevo);
+			//System.out.println("클럽 별점정보 가져오기!"+gradevo);
+			
+			//클럽별점 평균,참여자수
+			model.addAttribute("gradeAvgCnt", service.getClubAvgCnt(club_no));   
+			
 			
 			//모임관심사 정보로 관심사 가져오기
 			
@@ -136,11 +151,11 @@ public class ClubController {
 		}
 		
 		@ResponseBody
-		@RequestMapping(value = "/join/{club_no}",method=RequestMethod.GET)
+		@RequestMapping(value = "/join/{club_no}",method=RequestMethod.POST)
 		public void joinClub(@PathVariable("club_no") int club_no, @RequestParam("member_no") int member_no) {
 			
 			ClubMembers members = new ClubMembers();
-			members.setClub_member_no(member_no);
+			members.setMember_no(member_no);
 			members.setClub_no(club_no);
 			members.setClub_role_no(1);
 			service.join(members);
@@ -148,5 +163,10 @@ public class ClubController {
 			
 		}
 		
-		
+		@ResponseBody
+		@RequestMapping(value = "/grade", method = RequestMethod.POST)
+		public void clubGrade(@ModelAttribute ClubGradesVO vo) {
+				service.clubGrade(vo);
+				System.out.println("별점주기 완료");
+		}
 }

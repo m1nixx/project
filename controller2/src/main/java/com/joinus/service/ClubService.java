@@ -1,7 +1,9 @@
 package com.joinus.service;
 
 import java.util.List;
+import java.util.Map;
 
+import com.joinus.domain.ClubGradesVO;
 import com.joinus.domain.ClubMembers;
 import com.joinus.domain.ClubVo;
 import com.joinus.domain.InterestDetailsVo;
@@ -25,6 +27,13 @@ public interface ClubService {
 		
 	//모임가입하기
 	public void join(ClubMembers members);
+	//모임별점주기
+	public void clubGrade(ClubGradesVO vo);
+	
+	//모임 별점 정보 가져오기
+	public List<ClubGradesVO> getClubGrade(Integer num);
+	//모임 별점 평균값, 참여자 수 가져오기
+	public List<Map<String, Integer>> getClubAvgCnt(Integer num);
 	
 	//모임 정보 가져오기
 	public ClubVo getClubInfo(Integer num);
