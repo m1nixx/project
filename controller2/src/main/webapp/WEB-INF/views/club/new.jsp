@@ -58,6 +58,10 @@
 		    font-weight: bold;
 			color: white;
 		}
+		
+		.interTable>tr {
+			padding: 50px;
+		}
 		.interTable>td {
 			width: 250px;
 			background-color: 32C36C;
@@ -66,8 +70,7 @@
 			padding: 20px;
 			vertical-align: middle;
 		    cursor: pointer;
-		    border: 10px solid #F6F7F8;
- 		  	border-radius: 40px 10px;
+ 		  	border-radius: 35px;
  		  	color:white;
 		}
 		
@@ -96,18 +99,19 @@ $(document).ready(function(){
 			
 			
 		  $.ajax({
-			url:'/club/getdetail',
+			url:'${pageContext.request.contextPath}/club/getdetail',
 			data: {itemNum:itemNum},
 			datatype: 'json',
 			type:'GET',
 			success:function(data){
-				
 				
 				for(i=0;i<data.length;i++){
 				$('.newForm').append("<td><div onclick='select(this);'' id='newDetail'>"+data[i].interest_detail_name+"</td>");
 				}
 				
 				$('.detail').slideDown();
+			
+				
 			}
 			 
 		 
@@ -121,8 +125,30 @@ function select(item){
 	  var item = $(item).text();
 	  $('.detail2').slideDown();
 	  $('#interest_detail').val(item);
-	  $('#subject').scroll();
 } 
+
+function readImage(input) {
+    // 인풋 태그에 파일이 있는 경우
+    if(input.files && input.files[0]) {
+        // 이미지 파일인지 검사 (생략)
+        // FileReader 인스턴스 생성
+        const reader = new FileReader()
+        // 이미지가 로드가 된 경우
+        reader.onload = e => {
+            const previewImage = document.getElementById("preview-image")
+            previewImage.src = e.target.result
+        }
+        // reader가 이미지 읽도록 하기
+        reader.readAsDataURL(input.files[0])
+    }
+}
+// input file에 change 이벤트 부여
+const inputImage = document.getElementById("input-image")
+inputImage.addEventListener("change", e => {
+    readImage(e.target)
+})
+
+
 
 </script>
 
@@ -148,16 +174,16 @@ function select(item){
                   <div id="select" >
                   	<table >
                   		<tr class="interTable">
-                  			<td><div id="inter1" >요리/제조</td>
-                  			<td><div id="inter2" >봉사활동</td>
-                  			<td><div id="inter3" >운동/스포츠</td>
-                  			<td><div id="inter4" >오락/게임</td>
+                  			<td><div id="inter1" >요리/제조</div></td>
+                  			<td><div id="inter2" >봉사활동</div></td>
+                  			<td><div id="inter3" >운동/스포츠</div></td>
+                  			<td><div id="inter4" >오락/게임</div></td>
                   		</tr>
                   		<tr class="interTable">
-                  			<td><div id="inter5" >음악/악기</td>
-                  			<td><div id="inter6" >여행</td>
-                  			<td><div id="inter7" >외국/언어</td>
-                  			<td><div id="inter8" >문화/공연/축제</td>
+                  			<td><div id="inter5" >음악/악기</div></td>
+                  			<td><div id="inter6" >여행</div></td>
+                  			<td><div id="inter7" >외국/언어</div></td>
+                  			<td><div id="inter8" >문화/공연/축제</div></td>
                   		</tr>
                   	</table>
                   </div>
@@ -179,7 +205,7 @@ function select(item){
 		       
                
                   <div class="detail2" >
-                         <form method="post" >    
+                         <form action="" method="post" enctype="multipart/form-data">    
                          <input type="hidden" value="${membervo.member_no}" name="member_no" >                      
                          <div class="row g-3" align="center">
 	                 <p class="sub3"> 3. 모임의 정보를 작성해주세요 </p>     
@@ -222,17 +248,17 @@ function select(item){
                                     </div>
                                 </div>
                               
-                              <!-- 
+                           
                               	 <div class="col-12">
                                     <div class="form-floating">
-                                        <input type="file" class="btn py-2 position-absolute top-0 end-0 mt-2 me-2" name="club_image">
+                                        <input type="file" class="btn py-2 position-absolute top-0 end-0 mt-2 me-2"  id="input-image"name="file">
                                     </div>
                                 </div><br><br>
                                 <div class="col-12">
                                     <div class="form-floating">
                                         <p class="GreenP">대표이미지를 올려주세요(선택사항)</p>
                                     </div>
-                                    </div> -->
+                                    </div> 
                                     <hr> 
                                  <div class="col-12">
                                     <button class="btn btn-primary rounded-pill py-3 px-5" type="submit">모임 개설하기</button>
@@ -246,7 +272,7 @@ function select(item){
 	<hr>
                                 </div>
      
-    <!-- Contact End -->
+  <!-- Contact End -->
     
     </body>
 	

@@ -71,6 +71,9 @@
 						data: {member_no},
 						dataType: 'json',
 						success: function(){
+							
+							alert(' 저희 모임에 오신걸 환영합니다! ');
+							location.reload();
 						},
 						fail: function(data){
 				                alert('failed');
@@ -79,8 +82,6 @@
 				        }
 
 				        });
-							alert(' 저희 모임에 오신걸 환영합니다! ');
-							location.reload();
 				    
 				}else{
 				        return false;
@@ -144,6 +145,13 @@
 			</ul>
 	</div>
 	
+	
+	   	 <div class="col-12 text-center">
+		
+			<img alt="clubImage" src="${clubvo.club_image }">
+	
+		</div>
+	
     <!-- About Start  모임 설명 -->
     <div class="container-fluid bg-light overflow-hidden my-5 px-lg-0">
         <div class="container about px-lg-0">
@@ -171,11 +179,6 @@
 							<c:set var="clubMember" value="${clubmemberVO[i].member_no }"/>
 					    <c:if test="${not loop_flag }">
 							<c:choose>
-						        <c:when test="${memberN ne clubMember}">
-	                        		<div class="btn btn-primary rounded-pill py-3 px-5 mt-3" id="joinClub">가입하기</div>
-									 <c:set var="loop_flag" value="true" />
-						        </c:when>
-						        
 						        <c:when test="${memberN eq clubMember}">
 									<span class="text-bold">우리 모임의 별점을 선택해주세요</span>
 	                        		<form class="mb-3" name="myform" id="myform" method="post">
@@ -194,6 +197,12 @@
 									</form>		
 	                        		<c:set var="loop_flag" value="true" />
 						        </c:when>
+						        
+						        <c:when test="${memberN ne clubMember}">
+	                        		<div class="btn btn-primary rounded-pill py-3 px-5 mt-3" id="joinClub">가입하기</div>
+									 <c:set var="loop_flag" value="true" />
+						        </c:when>
+						        
 						       <c:when test="${memberN eq gradeMember }">
 						        	우리모임의 평균 별점은? (참여자수 : ${gradeAvgCnt[0].cnt} 명 )
 						        	<h3> ${gradeAvgCnt[0].avg} 점 </h3>
