@@ -2,8 +2,15 @@ package com.joinus.controller;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,13 +18,21 @@ import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -120,7 +135,7 @@ public class ClubController {
 				  InterestDetailsVo interDetail = service.getInterestNo(detail);
 				  //클럽정보 저장 + 넘버가져오기 
 				  service.newClub(clvo); 
-				  int club_no = clvo.getClub_no();
+				  int club_no = (int)clvo.getClub_no();
 				  model.addAttribute("club_no", club_no); 
 				  //모임관심사 저장
 				  service.newClubInterest(club_no,interDetail.getInterest_no(),interDetail.getInterest_detail_no()); 
@@ -128,14 +143,76 @@ public class ClubController {
 				  ClubMembers members = new ClubMembers(); 
 				  members.setClub_no(club_no);
 				  members.setMember_no(member_no); 
-				  members.setClub_role_no(2); //모임 첫생성은 관리자
+				  members.setClub_member_role("admin"); //모임 첫생성은 관리자
 				  service.join(members);
 				  
 				  model.addAttribute("member_no", member_no);
 				 
-			return "redirect:/club/{club_no}";
+				  return "redirect:/club/{club_no}";
+		}
+		/*
+		@RequestMapping(value="/display")
+		public ResponseEntity<Resource> display(HttpServletRequest request, HttpSession session, HttpServletResponse response , @PathVariable("Club_image") String Club_image){
+			
+			log.info("display호출");
+			
+			String realFile = "/resources/upload/clubs";
+			String fileNm = Club_image;
+			
+			Path filepath = null;
+
+			BufferedOutputStream out = null;
+			InputStream in = null;
+
+			try {
+				response.setContentType("image/" + ext);
+				response.setHeader("Content-Disposition", "inline;filename=" + fileNm);
+				File file = new File(realFile);
+				if(file.exists()){
+					in = new FileInputStream(file);
+					out = new BufferedOutputStream(response.getOutputStream());
+					int len;
+					byte[] buf = new byte[1024];
+					while ((len = in.read(buf)) > 0) {
+						out.write(buf, 0, len);
+					}
+				}
+			} catch (Exception e) {
+				
+			} finally {
+				if(out != null){ out.flush(); }
+				if(out != null){ out.close(); }
+				if(in != null){ in.close(); }
+			}
+			
+			
+			
+			// ---------------------------------------------
+			String path = "/resources/upload/clubs";
+			String folder ="";
+			
+			Resource resource = new FileSystemResource(path+Club_image);
+			
+			if(!resource.exists()) {
+				return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
+			}
+			
+			HttpHeaders header = new HttpHeaders();
+			Path filepath = null;
+			
+			try {
+				filepath = Paths.get(path+Club_image);
+				header.add("Content-Type", Files.probeContentType(filepath));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			
+			log.info("display 리턴!");
+			return new ResponseEntity<Resource>(resource,header,HttpStatus.OK);
 		}
 		
+		*/
 		
 		// http://localhost:8088/club/
 		@RequestMapping(value = "/{club_no}", method = RequestMethod.GET)
@@ -182,7 +259,7 @@ public class ClubController {
 			ClubMembers members = new ClubMembers();
 			members.setMember_no(member_no);
 			members.setClub_no(club_no);
-			members.setClub_role_no(1);
+			members.setClub_member_role("common");
 			service.join(members);
 			System.out.println("모임가입완료");
 			

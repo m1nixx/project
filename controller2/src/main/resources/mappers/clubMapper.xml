@@ -17,7 +17,6 @@
 	</select>
 
 	
-	
 	<insert id="createClub" parameterType="ClubVo">
 		insert into clubs(club_name,club_capacity,club_content,club_image)
 		values(#{club_name},#{club_capacity},#{club_content},#{club_image})
@@ -31,23 +30,9 @@
 		values(#{club_no},#{interest_no},#{interest_detail_no})
 	</insert>
 	
-	<insert id="MemberRolesAdmin">
-		insert into club_member_roles(club_role_name) values(2)
-		<selectKey resultType="Integer" keyProperty="club_role_name" order="AFTER">
-		SELECT LAST_INSERT_ID()
-		</selectKey>
-	</insert>
-	
-	<insert id="MemberRolesCom">
-		insert into club_member_roles(club_role_name) values(1)
-		<selectKey resultType="Integer" keyProperty="club_role_name" order="AFTER">
-		SELECT LAST_INSERT_ID()
-		</selectKey>
-	</insert>
-	
 	<insert id="joinMembers">
-		insert into club_members(club_no,member_no,club_role_no)
-		values(#{club_no},#{member_no},#{club_role_no})
+		insert into club_members(club_no,member_no,club_member_role)
+		values(#{club_no},#{member_no},#{club_member_role})
 	</insert>
 	
 	<insert id="clubGrade">

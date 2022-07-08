@@ -9,10 +9,10 @@
 			height: 1000px;
 		}
 		.sub {
-		font-size: 1.2em;  color: #32C36C;	
+		font-size: 1.2em;  color: #32C36C; font-weight: bold;
 		}
 		.sub2 {
-		font-size: 1.7em; font-weight: bold; margin-top: 150px; margin-bottom: 30px; font-style: italic;
+		font-size: 1.7em; font-weight: 500; margin-top: 150px; margin-bottom: 30px; color: #343a40;
 		}
 		.sub3 {
 		font-size: 1.7em; font-weight: bold;  margin-top: 300px;  font-style: italic;
@@ -33,7 +33,7 @@
 			color:#32C36C;font-size: 0.9em;
 		}
 		.marginTOP {
-			margin-top: 5em;
+			margin-top: 150px;
 		}
 		
 		#NewTitle {
@@ -59,15 +59,16 @@
 			color: white;
 		}
 		
-		.interTable>tr {
-			padding: 50px;
+		.interTable {
 		}
-		.interTable>td {
-			width: 250px;
+		.interTable>li {
+			border-bottom: solid 6px #F6F7F8;
+			width: 200px;
+			padding: 1em;
+			display: inline-block;
 			background-color: 32C36C;
 			font-size: large;
 			text-align:center;
-			padding: 20px;
 			vertical-align: middle;
 		    cursor: pointer;
  		  	border-radius: 35px;
@@ -82,11 +83,14 @@
 
 $(document).ready(function(){
 		
+	//관심사 텍스트를 클릭하면
 	$('#inter1,#inter2,#inter3,#inter4,#inter5,#inter6,#inter7,#inter8').click(function(){
+			
 			var item = $(this).text();
 			var itemNum;
 			$('#interest').val(item);
 			
+				//관심사 넘버로 변환 후 
 			if(item=="요리/제조"){ itemNum = 1; }
 			else if(item == "봉사활동"){ itemNum = 2;}
 			else if(item == "운동/스포츠"){ itemNum = 3;}
@@ -96,8 +100,9 @@ $(document).ready(function(){
 			else if(item == "외국/언어"){ itemNum = 7;}
 			else if(item == "문화/공연/축제"){ itemNum = 8;}
 			
-			
-			
+			$('#inter1,#inter2,#inter3,#inter4,#inter5,#inter6,#inter7,#inter8').unbind('click');
+				
+			//상세관심사 텍스트를 출력
 		  $.ajax({
 			url:'${pageContext.request.contextPath}/club/getdetail',
 			data: {itemNum:itemNum},
@@ -106,16 +111,25 @@ $(document).ready(function(){
 			success:function(data){
 				
 				for(i=0;i<data.length;i++){
-				$('.newForm').append("<td><div onclick='select(this);'' id='newDetail'>"+data[i].interest_detail_name+"</td>");
+						if(i == 3 || i == 7){
+				$('.newForm').append("<li onclick='select(this);'' id='newDetail'>"+data[i].interest_detail_name+"</li><br>");
+						}else{
+				$('.newForm').append("<li onclick='select(this);'' id='newDetail'>"+data[i].interest_detail_name+"</li>");
+						}
 				}
 				
 				$('.detail').slideDown();
-			
+				$('html,body').animate({ scrollTop: $('#newDetail').offset().top }, 200);
 				
-			}
-			 
+			$('#inter1,#inter2,#inter3,#inter4,#inter5,#inter6,#inter7,#inter8').bind('click');
+				}
 		 
 		});
+			
+			
+		 
+			
+	
 	}); 
 	
 });
@@ -125,6 +139,7 @@ function select(item){
 	  var item = $(item).text();
 	  $('.detail2').slideDown();
 	  $('#interest_detail').val(item);
+	  $('html,body').animate({ scrollTop: $('#interest').offset().top }, 200);
 } 
 
 function readImage(input) {
@@ -172,20 +187,16 @@ inputImage.addEventListener("change", e => {
                 <hr>    
 	              <p class="sub2"> 1. 어떤 관심사로 모임을 만들까요? </p>    
                   <div id="select" >
-                  	<table >
-                  		<tr class="interTable">
-                  			<td><div id="inter1" >요리/제조</div></td>
-                  			<td><div id="inter2" >봉사활동</div></td>
-                  			<td><div id="inter3" >운동/스포츠</div></td>
-                  			<td><div id="inter4" >오락/게임</div></td>
-                  		</tr>
-                  		<tr class="interTable">
-                  			<td><div id="inter5" >음악/악기</div></td>
-                  			<td><div id="inter6" >여행</div></td>
-                  			<td><div id="inter7" >외국/언어</div></td>
-                  			<td><div id="inter8" >문화/공연/축제</div></td>
-                  		</tr>
-                  	</table>
+                  			<ul class="interTable">
+                  			<li id="inter1">요리/제조</li>
+                  			<li id="inter2">봉사활동</li>
+                  			<li id="inter3">운동/스포츠</li>
+                  			<li id="inter4">오락/게임</li> <br>
+                  			<li id="inter5">음악/악기</li>
+                  			<li id="inter6">여행</li>
+                  			<li id="inter7">외국/언어</li>
+                  			<li id="inter8">문화/공연/축제</li>
+                  			</ul>
                   </div>
                   
                   	 	
@@ -193,13 +204,8 @@ inputImage.addEventListener("change", e => {
                   <div class="detail" >
                    	 	<p class="marginTOP"> ▼ </p>
 	                 <p class="sub3"> 2. 세부관심사를 선택해주세요 </p>    
-	                 <table >
-                  		<tr class="interTable newForm">				
-                  		</tr>
-                  	</table>
-                  		
-	                 <div class=""> </div>
-	                
+	                 <ul class="interTable newForm">
+	                	</ul>
 	              </div>
 	                
 		       

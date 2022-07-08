@@ -148,7 +148,7 @@
 	
 	   	 <div class="col-12 text-center">
 		
-			<img alt="clubImage" src="${clubvo.club_image }">
+			<img alt="clubImage" src="${pageContext.request.contextPath}/upload/club/${clubvo.club_image }">
 	
 		</div>
 	
@@ -173,10 +173,11 @@
 						        
 				<!--  모임멤버면 별점, 별점 후 평균값 / 멤버가 아니면 가입하기 버튼 / break 대신 loop_flag 로 반복 막음 --> 
 						<c:set var="loop_flag" value="false" />
-						<c:forEach begin="0" end="10000" step="1" var="i">
+					<c:forEach items="${clubGrade }" var="Cgrade">
+						<c:forEach items="${clubmemberVO }" var="Cmember">
 							<c:set var="memberN" value="${member_no }"/>
-							<c:set var="gradeMember" value="${clubGrade[i].member_no }"/>
-							<c:set var="clubMember" value="${clubmemberVO[i].member_no }"/>
+							<c:set var="gradeMember" value="${Cgrade.member_no }"/>
+							<c:set var="clubMember" value="${Cmember.member_no }"/>
 					    <c:if test="${not loop_flag }">
 							<c:choose>
 						        <c:when test="${memberN eq clubMember}">
@@ -197,19 +198,19 @@
 									</form>		
 	                        		<c:set var="loop_flag" value="true" />
 						        </c:when>
-						        
-						        <c:when test="${memberN ne clubMember}">
-	                        		<div class="btn btn-primary rounded-pill py-3 px-5 mt-3" id="joinClub">가입하기</div>
-									 <c:set var="loop_flag" value="true" />
-						        </c:when>
-						        
 						       <c:when test="${memberN eq gradeMember }">
 						        	우리모임의 평균 별점은? (참여자수 : ${gradeAvgCnt[0].cnt} 명 )
 						        	<h3> ${gradeAvgCnt[0].avg} 점 </h3>
 									 <c:set var="loop_flag" value="true" />
 						        </c:when>
+						        <c:when test="${memberN ne clubMember}">
+	                        		<div class="btn btn-primary rounded-pill py-3 px-5 mt-3" id="joinClub">가입하기</div>
+									 <c:set var="loop_flag" value="true" />
+						        </c:when>
+						        
 							</c:choose>	
 						        </c:if>
+						</c:forEach> 
 						</c:forEach> 
  							                   
                 	    </div>
@@ -234,7 +235,7 @@
                 <h1 class="mb-4">정모</h1>
                 <!-- 정모만들기 모임장만 보일 수 있도록  -->
                 <c:forEach var="member" items="${clubmemberVO}" >
-                <c:if test="${member.member_no == member_no && member.club_role_no == 2 }">
+                <c:if test="${member.member_no == member_no && member.club_member_role == 'admin' }">
                 <a class="small fw-medium" href="">모임장 정모만들기<i class="fa fa-arrow-right ms-2"></i></a>
                 </c:if>
                 </c:forEach>

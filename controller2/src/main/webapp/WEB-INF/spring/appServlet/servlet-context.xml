@@ -14,6 +14,7 @@
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/upload/**" location="/D:\workspace_sts5\.metadata\.plugins\org.eclipse.wst.server.core\tmp2\wtpwebapps\controller2\resources\upload/club/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -29,9 +30,6 @@
 	 <beans:property name="maxUploadSize" value="314572800"/><!-- 10MB -->
 	</beans:bean>
 	
-<!-- 	<beans:bean id="uploadPath" class="java.lang.String">
-		<beans:constructor-arg value="/Users/ITWILL/upload" >
-		</beans:constructor-arg>
-	</beans:bean> -->
+	
 	
 </beans:beans>

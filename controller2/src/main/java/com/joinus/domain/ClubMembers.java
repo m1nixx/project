@@ -17,7 +17,7 @@ public class ClubMembers {
 	private int club_no;
 	private int member_no;
 	private Timestamp club_member_regdate;
-	private int club_role_no;
+	private String club_member_role;
 
 	
 }
